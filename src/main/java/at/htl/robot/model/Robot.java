@@ -6,7 +6,6 @@ public class Robot {
     private int y = 0;
     private Direction direction = Direction.SOUTH;
 
-
     //region getter and setter
 
     public int getX() {
@@ -28,25 +27,34 @@ public class Robot {
     public Direction getDirection() {
         return direction;
     }
-
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
+
+
     //endregion
 
     public int stepForward() {
         switch (direction) {
             case SOUTH:
-                y += 1;
+                if (y <= 10) {
+                    y += 1;
+                }
                 return y;
             case NORTH:
-                y -= 1;
+                if (y >= 1) {
+                    y -= 1;
+                }
                 return y;
             case WEST:
-                x -= 1;
+                if (x >= 1) {
+                    x -= 1;
+                }
                 return x;
             case EAST:
-                x += 1;
+                if (x <= 10) {
+                    x += 1;
+                }
                 return x;
         }
         return x;
@@ -68,5 +76,37 @@ public class Robot {
                 break;
         }
         return this.direction;
+    }
+
+    public int setPositionTeleport() {
+        if (this.x == 11) {
+            return this.x = 1;
+        }
+        if (this.x == 0) {
+            return this.x = 10;
+        }
+        if (this.y == 11) {
+            return this.y = 1;
+        }
+        if (this.y == 0) {
+            return this.y = 10;
+        }
+        return x;
+    }
+
+    public int setPositionRestrict() {
+        if (this.x > 10) {
+            return this.x = 10;
+        }
+        if (this.x < 1) {
+            return this.x = 1;
+        }
+        if (this.y > 10) {
+            return this.y = 10;
+        }
+        if (this.y < 1) {
+            return this.y = 1;
+        }
+        return x;
     }
 }

@@ -9,8 +9,9 @@ public class Main extends PApplet {
     // Hier die Member-Attribute eintragen
 
     int leftMargin = 70;
-    int upperMargin = 100;
+    int upperMargin = 120;
     int boxLength = 50;
+    boolean isTeleport = false;
     Robot robot;
 
     public static void main(String[] args) {
@@ -33,6 +34,15 @@ public class Main extends PApplet {
      * Diese Methode wird iterativ durchlaufen (wie loop() beim Arduino)
      */
     public void draw() {
+
+        textSize(20);
+        text("Press f to step forward", leftMargin, 20);
+        text("Press l to turn left", leftMargin, 40);
+        text("Press m to change Mode", leftMargin, 60);
+        text("Current Direction : " + robot.getDirection(), leftMargin, 100);
+
+
+        fill(255);
         for (int i = 0; i < 11; i++) {
             line(
                     leftMargin,
@@ -40,21 +50,37 @@ public class Main extends PApplet {
                     leftMargin + 10 * boxLength,
                     upperMargin + i * boxLength
             );
+
             line(
                     leftMargin + i * boxLength,
                     upperMargin,
                     leftMargin + i * boxLength,
                     upperMargin + 10 * boxLength
             );
+
             int boxCenterX = leftMargin - boxLength / 2 + robot.getX() * boxLength;
             int boxCenterY = upperMargin - boxLength / 2 + robot.getY() * boxLength;
-            ellipse(
-                    boxCenterX,
-                    boxCenterY,
-                    (int) (boxLength * 0.8),
-                    (int) (boxLength * 0.8)
-            );
+
+            if (robot.getX() <= 10 && robot.getX() >= 1 && robot.getY() >= 1 && robot.getY() <= 10) {
+                ellipse(
+                        boxCenterX,
+                        boxCenterY,
+                        (int) (boxLength * 0.8),
+                        (int) (boxLength * 0.8)
+                );
+            }
         }
+
+        fill(0);
+        if (isTeleport) {
+            robot.setPositionTeleport();
+            text("Current Mode: Teleport", leftMargin, 80);
+        } else {
+            robot.setPositionRestrict();
+            text("Current Mode: Restrict", leftMargin, 80);
+        }
+
+
 
     }
 
@@ -89,6 +115,10 @@ public class Main extends PApplet {
         } else if (key == 'l' || key == 'L') {
             deleteAll();
             robot.rotateLeft();
+        }
+
+        if (key == 'm' || key == 'M') {
+            isTeleport = !isTeleport;
         }
 
     }
